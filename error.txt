@@ -1,0 +1,61 @@
+    void deleteRecord()
+    {
+        top::color(def[0]);
+        cout << setw(padding) << "" << setw(menuWidth) << setfill('-') << "" << setfill(' ') << endl;
+        top::color(def[0]);
+        cout << setw(padding) << "" << "\t\t\tRemove" <<endl;
+        top::color(def[0]);
+        cout << setw(padding) << "" << setw(menuWidth) << setfill('-') << "" << setfill(' ') << endl;
+        ifstream user_password("user_name_and_password.txt", ios::binary | ios::in|ios::out);
+        ofstream data_clear("temp.txt",ios::binary|ios::out);
+        top::gotoxy(padding, 4);
+        cout << "Firstname" << setw(15) << "Lastname" << setw(15) << "Username" << endl;
+        i=5;
+        int b=0;
+        bool found=false;
+        while (user_password >> username >> password >> fname >> lname)
+        {
+            top::gotoxy(padding, i);
+            cout << fname << setw(18) << lname << setw(15) << username << endl;
+            i++;
+        }
+        user_password.close();
+        top::color(def[0]);
+        cout << setw(padding) << "" << setw(menuWidth) << setfill('-') << "" << setfill(' ') << endl;
+        cout<<"Enter username of the user you want to delete"<<endl;
+        cin>>input_user;
+        ifstream check("user_name_and_password.txt", ios::binary|ios::in );
+
+string tempUsername, tempPassword, tempFname, tempLname;
+
+
+    while (check >> tempUsername >> tempPassword >> tempFname >> tempLname) {
+        if (tempUsername != input_user) {
+            data_clear << tempUsername << " " << tempPassword << " " << tempFname << " " << tempLname << std::endl;
+        } else {
+            found = true;
+        }
+    }
+    getch();
+    data_clear.close();
+    check.close();
+    remove("user_name_and_password.txt");
+    rename("temp.txt", "user_name_and_password.txt");
+    if (found) {
+        cout << "Record deleted!" << endl;
+    } else {
+        cout << "No such data found." << endl;
+        remove("temp.txt");
+    }
+    cout << "Press enter key to continue." << endl;
+    cout << "Else press any other key." << endl;
+    key = _getch();
+    if (key == '\r') {
+        clear();
+        deleteRecord();
+    } else {
+        clear();
+        EditModerator();
+    }
+
+    }
